@@ -68,14 +68,14 @@ if (results.HasErrors())
 }
 
 // 6. Get values
-results["long-short"]    // = true
-                         // Note you must use long option anme if set
-results["long-arg"]      // = "named"
-results["@1"]            // = "unnamed1" (positional argument starting from 1)
-results["@3"]            // = "unnamed3"
-results.GetAllArguments() // = { "unnamed1", "unnamed2", "unnamed3" }
-results["invalid"]       // = null
-results.Contains("invalid") // = false
+results["long-short"];    // = true
+                          // Note you must use long option anme if set
+results["long-arg"];      // = "named"
+results["@1"];            // = "unnamed1" (positional argument starting from 1)
+results["@3"];            // = "unnamed3"
+results.GetAllArguments(); // = { "unnamed1", "unnamed2", "unnamed3" }
+results["invalid"];       // = null
+results.Contains("invalid"); // = false
 ```
 
 ## Licence

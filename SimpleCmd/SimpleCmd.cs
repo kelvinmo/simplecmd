@@ -521,7 +521,7 @@ namespace SimpleCmd
             {
                 if (int.TryParse(query.Substring(1), out int i))
                 {
-                    return args[i - 1];
+                    return (args.Count >= i) ? args[i - 1] : null;
                 }
                 else
                 {

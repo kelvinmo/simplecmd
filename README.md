@@ -39,7 +39,7 @@ parser.MultipleShortOptions = true;
 parser.StopOnFirstNonOption = false;
 
 // or
-parser.SetStyle(OptionStyle.Default)
+parser.SetStyle(OptionStyle.Default);
 
 // 3. Add options
 //    You can chain multiple Add methods
@@ -50,7 +50,7 @@ parser
                              // value not required
     .Add("m", true)  // short option, value required
     .Add("long-arg", true)  // long option, value required
-    .Add("long-short-arg", "x", true)  // long option with short option
+    .Add("long-short-arg", "x", true);  // long option with short option
                                        // alias, value required
 
 // 4. Parse the command line arguments

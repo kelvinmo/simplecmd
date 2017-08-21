@@ -194,8 +194,19 @@ namespace Tests
             Assert.AreEqual(false, results.HasErrors());
             Assert.AreEqual(true, results["a"]);
             Assert.AreEqual("named1", results["long-arg"]);
+            Assert.AreEqual(3, results.StopOptionParsePosition);
             Assert.AreEqual("-z", results["@3"]);
             Assert.AreEqual("--not-an-option", results["@4"]);
+        }
+
+        [TestMethod]
+        public void TestStopOptionParsePosition()
+        {
+            SimpleCmdParser parser = MakeParser();
+            string[] args = new string[] { "unnamed1", "-a", "--long-arg=named1", "unnamed2", "--" };
+            SimpleCmdResults results = parser.Parse(args);
+            Assert.AreEqual(false, results.HasErrors());
+            Assert.AreEqual(0, results.StopOptionParsePosition);
         }
 
         [TestMethod]
@@ -208,6 +219,7 @@ namespace Tests
             Assert.AreEqual(false, results.HasErrors());
             Assert.AreEqual(true, results["a"]);
             Assert.AreEqual("named1", results["long-arg"]);
+            Assert.AreEqual(2, results.StopOptionParsePosition);
             Assert.AreEqual("-z", results["@2"]);
             Assert.AreEqual("--not-an-option", results["@3"]);
         }

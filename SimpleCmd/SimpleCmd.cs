@@ -275,6 +275,7 @@ namespace SimpleCmd
 
                 if (parseOptions && (_stopOptionParseTrigger != null) && (args[i] == _stopOptionParseTrigger))  // stop option parsing (--)
                 {
+                    results.StopOptionParsing();
                     parseOptions = false;
                 }
                 else if (parseOptions && IsLongOption(args[i]))  // long option
@@ -372,10 +373,15 @@ namespace SimpleCmd
                 else  // argument
                 {
                     results.AddArgument(args[i]);
-                    if (_stopOnFirstNonOption) parseOptions = false;
+                    if (_stopOnFirstNonOption)
+                    {
+                        results.StopOptionParsing();
+                        parseOptions = false;
+                    }
                 }
             }
 
+            results.ParseCompleted();
             return results;
         }
 
@@ -478,6 +484,23 @@ namespace SimpleCmd
         private IList<string> args = new List<string>();
         private IDictionary<string, object> options = new Dictionary<string, object>();
         private IList<Tuple<ParseErrorType, string, string>> errors = new List<Tuple<ParseErrorType, string, string>>();
+        private int stopOptionParsePosition = 0;
+
+        /// <summary>
+        /// The position of the first positional argument where option processing has stopped (i.e. the
+        /// remainder of the argument string).
+        /// </summary>
+        /// <remarks>
+        /// <para>If option processing has stopped because of the presence of <code>StopOptionParseTrigger</code>,
+        /// then this represents the position of the first argument after the trigger.</para>
+        /// <para>If option processing has stopped because <code>StopOnFirstNonOption</code> is set to true,
+        /// then this represents the position of the first argument after the non-option argument that
+        /// stopped option processing.</para>
+        /// </remarks>
+        public int StopOptionParsePosition
+        {
+            get { return stopOptionParsePosition; }
+        }
 
         /// <summary>
         /// Returns the value of an option or an argument based on a specified query string.
@@ -609,6 +632,16 @@ namespace SimpleCmd
         internal void AddError(ParseErrorType type, string name)
         {
             AddError(type, name, null);
+        }
+
+        internal void StopOptionParsing()
+        {
+            if (stopOptionParsePosition == 0) stopOptionParsePosition = args.Count + 1;
+        }
+
+        internal void ParseCompleted()
+        {
+            if (args.Count <= stopOptionParsePosition) stopOptionParsePosition = 0;
         }
     }
 }
